@@ -74,17 +74,17 @@ namespace fchvpn
                 .SetSmallIcon(Resource.Drawable.logo)
                 .SetOngoing(true)
                 .SetContentIntent(pendingIntent)
+
                 .Build();
 
                 StartForeground(SERVICE_RUNNING_NOTIFICATION_ID, notification);
-
             }
             catch {
-            
+
             }
             //do you work  
             //new BackgroundStartup();
-            new Thread(new ThreadStart(new ThreadStart(startServer))).Start();
+            startServer();
 
 
             return StartCommandResult.Sticky;
@@ -131,27 +131,18 @@ namespace fchvpn
                 {
                     server = new HttpServer(baseGet);
                     server.Run(7890);
-                    Thread.Sleep(5000);
-
-                    MainActivity.Instance.RunOnUiThread(() => {
-
-                        MainActivity.Instance.progressLoading.Visibility = ViewStates.Invisible;
-                        MainActivity.Instance.loadingInfo.Text = "Conectado Al Servidor!";
-
-                    });
                 }
             }
             catch
             {
-                MainActivity.Instance.RunOnUiThread(() => {
-
-                    Toast.MakeText(MainActivity.Instance, "Notification Support Error!", ToastLength.Long);
-
-                });
-            }
-            MainActivity.Instance.RunOnUiThread(() => {
                 
-                CreateNotificationChannel();
+            }
+
+            MainActivity.Instance.RunOnUiThread(() => {
+
+                MainActivity.Instance.progressLoading.Visibility = ViewStates.Invisible;
+                MainActivity.Instance.loadingInfo.Text = "Conectado Al Servidor!";
+
             });
         }
 

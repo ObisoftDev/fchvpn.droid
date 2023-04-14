@@ -4,6 +4,7 @@ using Android.Support.V7.App;
 using Android.Runtime;
 using Android.Widget;
 using static Android.Manifest;
+using System;
 
 namespace fchvpn
 {
@@ -25,19 +26,31 @@ namespace fchvpn
             // Set our view from the "main" layout resource
             SetContentView(Resource.Layout.activity_main);
 
+            try
+            {
+                string[] perms = new string[] {
+                        Permission.WriteExternalStorage,
+                        Permission.ReadExternalStorage,
+                        Permission.Internet,
+                        Permission.ForegroundService
+                };
+                RequestPermissions(perms, 200);
+            }
+            catch { }
 
-            if (!CheckPermissionGranted(Permission.Internet))
-                this.RequestPermissions(new string[] { Permission.Internet }, 1);
-            if (!CheckPermissionGranted(Permission.BindAccessibilityService))
-                this.RequestPermissions(new string[] { Permission.BindAccessibilityService }, 1);
-            if (!CheckPermissionGranted(Permission.ForegroundService))
-                this.RequestPermissions(new string[] { Permission.ForegroundService }, 1);
 
             progressLoading = FindViewById<ProgressBar>(Resource.Id.progressInfo);
             loadingInfo = FindViewById<TextView>(Resource.Id.loadingInfo);
 
-            startServiceAndroid service = new startServiceAndroid();
-            service.StartForegroundServiceCompat();
+            try
+            {
+                startServiceAndroid service = new startServiceAndroid();
+                service.StartForegroundServiceCompat();
+            }
+            catch(Exception ex)
+            {
+                Toast.MakeText(this, ex.Message, ToastLength.Long);
+            }
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Android.Content.PM.Permission[] grantResults)
         {
@@ -48,7 +61,7 @@ namespace fchvpn
         {
             try
             {
-                return (this.CheckSelfPermission(perm) == Android.Content.PM.Permission.Granted);
+                return CheckSelfPermission(perm) == Android.Content.PM.Permission.Granted;
             }
             catch{}
             return false;

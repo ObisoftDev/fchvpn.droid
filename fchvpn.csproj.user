@@ -3,6 +3,6 @@
   <PropertyGroup>
     <AndroidDesignerPreferredTheme>AppTheme</AndroidDesignerPreferredTheme>
     <AndroidDesignerPreferredDevice>Nexus 4</AndroidDesignerPreferredDevice>
-    <SelectedDevice>Motorola moto e5 play</SelectedDevice>
+    <SelectedDevice>Xiaomi Redmi Note 9S</SelectedDevice>
   </PropertyGroup>
 </Project>
